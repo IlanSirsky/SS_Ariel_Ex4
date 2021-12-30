@@ -1,16 +1,15 @@
 #include <stdio.h>
-#include "nodes.h"
+#include "graph.h"
 
-typedef struct Node
-{
-    int dest;
-    int id;
-    struct Node *next;
-} Node;
+typedef struct GRAPH_NODE_ {
+    int node_num;
+    pedge edges;
+    struct GRAPH_NODE_ *next;
+} node, *pnode;
 
-Node *newNode(int id, Node *next)
+node *newNode(int id, node *next)
 {
-    Node *p = (Node *)malloc(sizeof(Node));
+    node *p = (node *)malloc(sizeof(node));
     p->id = id;
     p->next = next;
     return p;
@@ -24,18 +23,20 @@ void insertLast(int id, struct Node **head)
     *p = newNode(id, NULL);
 }
 
-void deleteFromList(int id, Node **h)
+void deleteFromList(int id, node **h)
 {
     if (!*h)
         return;
-    Node *p = *h;
-    Node **prev = h;
+    node *p = *h;
+    node **prev = h;
     while (p)
     {
         if (p->id == id)
         {
             *prev = p->next;
+            edge **pe = &(p->edges)
             free(p);
+            freeEdges(pe)
             p = *prev;
         }
         else
@@ -43,5 +44,17 @@ void deleteFromList(int id, Node **h)
             prev = &(p->next);
             p = p->next;
         }
+    }
+}
+
+void freeNodes(node **h){
+    node p = *h;
+    node *prev = h;
+    while(p){
+        *prev = p->next;
+        edge **pe = &(p->edges)
+        free(p);
+        freeEdges(pe)
+        p = *prev;
     }
 }
