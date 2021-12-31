@@ -1,16 +1,19 @@
 #ifndef nodes
 #define nodes
 
-typedef struct Node
+typedef struct edge_ edge, *pedge;
+
+// Node
+typedef struct node_
 {
-    int dest;
     int id;
-    struct Node *next;
-} Node;
+    pedge edges;
+    struct node_ *next;
+} node, *pnode;
 
-Node *newNode(int, Node *);
-void insertLast(int, struct Node **);
-void deleteFromList(int, Node **);
-
+node *newNode(int, node *);
+void insertLastN(int, node **);
+void deleteFromListN(int, node **);
+void freeNodes(node **);
 
 #endif

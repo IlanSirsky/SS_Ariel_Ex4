@@ -1,55 +1,65 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+#include "nodes.h"
+#include "edges.h"
 #include "graph.h"
 
-typedef struct edge_ {
-    int weight;
-    pnode endpoint;
-    struct edge_ *next;
-} edge, *pedge;
-
-edge *newEdge(int weight, pnode endpoint,edge *next)
+edge *newEdge(int weight, int dest, edge *next, pnode *head)
 {
-    edge *p = (edge *)malloc(sizeof(edge));
-    p->weight = weight;
-    p->endpoint = endpoint;
-    p->next = next;
-    return p;
+    edge *e = (edge *)malloc(sizeof(edge));
+    if (e == NULL)
+    {
+        return NULL;
+    }
+    pnode temp = head;
+    while (temp->id != dest){
+        temp = temp->next;
+    }
+    e->weight = weight;
+    e->endpoint = temp;
+    e->next = next;
+    return e;
 }
 
-void insertLast(int id, struct edge **head)
+void insertLastE(int dest, edge **hEdges, int w, pnode *head)
 {
-    edge **p = head;
-    while (*p)
-        p = &((*p)->next);
-    *p = newEdge(id, NULL);
+    edge **e = hEdges;
+    while (*e)
+    {
+        e = &((*e)->next);
+    }
+    *e = newEdge(w, dest, NULL, head);
 }
 
-void deleteFromList(int id, edge **h)
+// void deleteFromListE(int id, edge **h)
+// {
+//     if (!*h)
+//         return;
+//     edge *p = *h;
+//     edge **prev = h;
+//     while (p)
+//     {
+//         if (p->id == id)
+//         {
+//             *prev = p->next;
+//             free(p);
+//             p = *prev;
+//         }
+//         else
+//         {
+//             prev = &(p->next);
+//             p = p->next;
+//         }
+//     }
+// }
+
+void freeEdges(edge **edge)
 {
-    if (!*h)
-        return;
-    edge *p = *h;
-    edge **prev = h;
+    pedge p = *edge;
+    pedge *prev = edge;
     while (p)
     {
-        if (p->id == id)
-        {
-            *prev = p->next;
-            free(p);
-            p = *prev;
-        }
-        else
-        {
-            prev = &(p->next);
-            p = p->next;
-        }
-    }
-}
-
-void freeEdges(edge **h){
-    pedge p = *h;
-    pedge *prev = h;
-    while(p){
         *prev = p->next;
         free(p);
         p = *prev;

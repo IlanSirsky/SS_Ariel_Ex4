@@ -1,32 +1,38 @@
 #include <stdio.h>
-#include "graph.h"
+#include <stdlib.h>
 
-typedef struct GRAPH_NODE_ {
-    int node_num;
-    pedge edges;
-    struct GRAPH_NODE_ *next;
-} node, *pnode;
+#include "edges.h"
+#include "nodes.h"
+#include "graph.h"
 
 node *newNode(int id, node *next)
 {
     node *p = (node *)malloc(sizeof(node));
+    if (p == NULL)
+    {
+        return NULL;
+    }
     p->id = id;
     p->next = next;
     return p;
 }
 
-void insertLast(int id, struct Node **head)
+void insertLastN(int id, node **head)
 {
-    struct Node **p = head;
+    node **p = head;
     while (*p)
+    {
         p = &((*p)->next);
+    }
     *p = newNode(id, NULL);
 }
 
-void deleteFromList(int id, node **h)
+void deleteFromListN(int id, node **h)
 {
     if (!*h)
+    {
         return;
+    }
     node *p = *h;
     node **prev = h;
     while (p)
@@ -34,9 +40,9 @@ void deleteFromList(int id, node **h)
         if (p->id == id)
         {
             *prev = p->next;
-            edge **pe = &(p->edges)
+            edge **pe = &(p->edges);
             free(p);
-            freeEdges(pe)
+            freeEdges(pe);
             p = *prev;
         }
         else
@@ -47,14 +53,16 @@ void deleteFromList(int id, node **h)
     }
 }
 
-void freeNodes(node **h){
-    node p = *h;
-    node *prev = h;
-    while(p){
+void freeNodes(node **head)
+{
+    pnode p = *head;
+    pnode *prev = head;
+    while (p != NULL)
+    {
         *prev = p->next;
-        edge **pe = &(p->edges)
+        edge **pe = &(p->edges);
+        freeEdges(pe);
         free(p);
-        freeEdges(pe)
         p = *prev;
     }
 }

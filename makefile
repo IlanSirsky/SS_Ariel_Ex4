@@ -1,22 +1,22 @@
-OUTPUT = stringProg
+OUTPUT = DiGraph
 CC = gcc
 CFLAGS = -Wall -g
-OBJ = functionA.o functionB.o functionC.o
+OBJ = graph.o nodes.o edges.o
 
 
 all: output functions
 
-main.o: main.c string_Prog.h
+main.o: main.c nodes.h graph.h edges.h
 	$(CC) -c $(CFLAGS) main.c
 
-functionA.o: functionA.c string_Prog.h
-	$(CC) -c $(CFLAGS) functionA.c
+graph.o: graph.c nodes.h graph.h edges.h
+	$(CC) -c $(CFLAGS) graph.c
 
-functionB.o: functionB.c string_Prog.h
-	$(CC) -c $(CFLAGS) functionB.c
+nodes.o: nodes.c nodes.h graph.h edges.h
+	$(CC) -c $(CFLAGS) nodes.c
 
-functionC.o: functionC.c string_Prog.h
-	$(CC) -c $(CFLAGS) functionC.c
+edges.o: edges.c nodes.h graph.h edges.h
+	$(CC) -c $(CFLAGS) edges.c
 
 functions: libfunctions.so
 

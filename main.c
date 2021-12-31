@@ -1,5 +1,10 @@
 #include <stdio.h>
 
+#include "nodes.h"
+#include "edges.h"
+#include "graph.h"
+
+pnode *graph;
 
 int main()
 {
@@ -10,15 +15,15 @@ int main()
         switch (in)
         {
         case 'A':
-            fun1();
+            build_graph_cmd(graph);
             break;
 
         case 'B':
-            fun2();
+            //fun2();
             break;
 
         case 'C':
-            fun3();
+            //fun3();
             break;
 
         case 'D':
