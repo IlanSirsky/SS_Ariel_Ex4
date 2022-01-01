@@ -47,7 +47,7 @@ void build_graph_cmd(pnode *head)
     }
 }
 void insert_node_cmd(pnode *head) {}
-void delete_node_cmd(pnode *head);
+void delete_node_cmd(pnode *head) {}
 
 void printGraph_cmd(pnode *head)
 { //for self debug
@@ -151,20 +151,16 @@ char *strrev(char *str)
 {
     if (!str)
     {
-        //fprintf(stderr, "%s() Error: invalid string\n", __func__);
         return NULL;
     }
-
     char *begin = str;
     char *end = *begin ? str + strlen(str) - 1 : begin; /* ensure non-empty */
     char tmp;
-
     while (end > begin)
     {
         tmp = *end;
         *end-- = *begin;
         *begin++ = tmp;
     }
-
     return str;
 }

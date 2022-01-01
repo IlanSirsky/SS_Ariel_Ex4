@@ -14,15 +14,17 @@ int main()
         if (in == 'A'){
             build_graph_cmd(&graph);
             printGraph_cmd(&graph);
+            continue;
         }
 
         if (in == 'B'){
-            //fun2();
-            break;
+            insert_node_cmd(&graph);
+            continue;
         }
 
         if (in == 'D'){
-            break;
+            delete_node_cmd(&graph);
+            continue;
         }
 
         if (in == 'S'){
