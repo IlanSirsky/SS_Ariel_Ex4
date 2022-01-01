@@ -11,7 +11,7 @@ typedef struct node_
     struct node_ *next;
 } node, *pnode;
 
-node *newNode(int, node *);
+node *newNode(int);
 void insertLastN(int, pnode *);
 void deleteFromListN(int, node **);
 void freeNodes(node **);
