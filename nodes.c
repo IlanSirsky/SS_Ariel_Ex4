@@ -5,65 +5,28 @@
 #include "nodes.h"
 #include "graph.h"
 
-node *newNode(int id, node *next)
+node *newNode(int id)
 {
-    node *p = (node *)malloc(sizeof(node));
-    if (p == NULL)
-    {
-        printf("not allocated");
-        return NULL;
-    }
+    pnode p = (pnode)malloc(sizeof(node));
     p->id = id;
-    p->next = next;
+    p->next = NULL;
+    p->edges = NULL;
     return p;
 }
 
 void insertLastN(int id, pnode *head)
 {
     pnode *p = head;
-    printf("im here1\n");
-    while (p != NULL)
-    {
+    while (*p){
         p = &((*p)->next);
     }
-    *p = newNode(id, NULL);
-
-    //create a new node
-    
-    // node *newNode = (node *)malloc(sizeof(node));
-    // if (newNode == NULL)
-    // {
-    //     printf("not allocated");
-    //     return;
-    // }
-    // newNode->id = id;
-    // newNode->next = NULL;
-    // //if head is NULL, it is an empty list
-    // if (*head == NULL)
-    // {
-    //     *head = newNode;
-    //     printf("here1");
-    // }
-    // //Otherwise, find the last node and add the newNode
-    // else
-    // {
-    //     node *lastNode = *head;
-    //     //last node's next address will be NULL.
-    //     while (lastNode->next != NULL)
-    //     {
-    //         lastNode = lastNode->next;
-    //     }
-    //     //add the newNode at the end of the linked list
-    //     lastNode->next = newNode;
-    // }
+    *p = newNode(id);
 }
 
-void deleteFromListN(int id, node **h)
+void deleteFromList(int id, node **h)
 {
     if (!*h)
-    {
         return;
-    }
     node *p = *h;
     node **prev = h;
     while (p)
@@ -84,16 +47,17 @@ void deleteFromListN(int id, node **h)
     }
 }
 
-void freeNodes(node **head)
-{
-    pnode p = *head;
-    pnode *prev = head;
-    while (p != NULL)
-    {
-        prev = &(p->next);
+void freeNodes(pnode *h){
+    if (!h){
+        return;
+    }
+    pnode p = *h;
+    pnode *prev = h;
+    while(p){
+        *prev = p->next;
         edge **pe = &(p->edges);
-        freeEdges(pe);
         free(p);
+        freeEdges(pe);
         p = *prev;
     }
 }

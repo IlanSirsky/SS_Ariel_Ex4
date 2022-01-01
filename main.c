@@ -4,36 +4,41 @@
 #include "edges.h"
 #include "graph.h"
 
-pnode *graph = NULL;
 
 int main()
 {
+    pnode graph = NULL;
     char in = 1;
-    while (in != 'D')
+    while (scanf(" %c", &in) != EOF)
     {
-        scanf(" %c", &in);
-        switch (in)
-        {
-        case 'A':
-            build_graph_cmd(graph);
-            //printGraph_cmd(graph);
-            break;
+        if (in == 'A'){
+            build_graph_cmd(&graph);
+            printGraph_cmd(&graph);
+        }
 
-        case 'B':
+        if (in == 'B'){
             //fun2();
             break;
-
-        case 'C':
-            //fun3();
-            break;
-
-        case 'D':
-            break;
-
-        // command doesn't match any case constant A, B, C, D
-        default:
-            printf("Error! command isn't correct \n");
         }
+
+        if (in == 'D'){
+            break;
+        }
+
+        if (in == 'S'){
+            int src = 0, dst = 0;
+            scanf("%d", &src);
+            scanf("%d", &dst);
+            printf("src = %d , dst = %d\n", src,dst);
+            printf("%d\n",dijsktra(&graph,src,dst));
+            continue;
+        }
+
+        if (in == 'T'){
+            TSP_cmd(graph);
+            continue;
+        }
+
     }
     return 0;
 }

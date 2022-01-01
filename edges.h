@@ -12,7 +12,8 @@ typedef struct edge_
 } edge, *pedge;
 
 edge *newEdge(int , pnode);
-void insertLastE(pnode , int , pnode *);
+void insertLastE(pnode, int , pnode *);
+void addEdge(int, int, int, pnode *);
 void freeEdges(pedge *);
 void addEdge(int , int , int , pnode *);
 

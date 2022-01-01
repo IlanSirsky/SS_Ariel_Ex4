@@ -5,31 +5,59 @@
 #include "edges.h"
 #include "graph.h"
 
-edge *newEdge(int weight, int dest, edge *next, pnode *head)
+edge *newEdge(int weight, pnode dest)
 {
     edge *e = (edge *)malloc(sizeof(edge));
     if (e == NULL)
     {
         return NULL;
     }
-    pnode temp = *head;
-    while (temp->id != dest){
-        temp = temp->next;
-    }
     e->weight = weight;
-    e->endpoint = temp;
-    e->next = next;
+    e->endpoint = dest;
+    e->next = NULL;
     return e;
 }
 
-void insertLastE(int dest, edge **hEdges, int w, pnode *head)
+void insertLastE(pnode dest, int w, pnode *head)
 {
-    edge **e = hEdges;
-    while (*e)
-    {
-        e = &((*e)->next);
+    pedge e = (*head) -> edges;
+
+    pedge ed = newEdge(w, dest);
+
+    if(!e){
+        (*head) -> edges = ed;
     }
-    *e = newEdge(w, dest, NULL, head);
+    else{
+        while (e -> next)
+        {
+            e = e -> next;
+        }
+        e -> next  = ed;
+    }
+}
+
+void addEdge(int src, int dest, int w, pnode *head){
+    pnode curr = *head;
+    pnode nsrc = NULL;
+    pnode ndest = NULL;
+
+    while(curr){
+
+        if(curr -> id == src){
+            nsrc = curr;
+        }
+        if (curr -> id == dest){
+            ndest = curr;
+        }
+
+        curr = curr -> next;
+    }
+
+    if(!nsrc || !ndest){
+        return;
+    }
+
+    insertLastE(ndest, w, &nsrc);
 }
 
 // void deleteFromListE(int id, edge **h)
