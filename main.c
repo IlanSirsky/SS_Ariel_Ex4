@@ -4,7 +4,7 @@
 #include "edges.h"
 #include "graph.h"
 
-pnode *graph;
+pnode *graph = NULL;
 
 int main()
 {
@@ -16,6 +16,7 @@ int main()
         {
         case 'A':
             build_graph_cmd(graph);
+            //printGraph_cmd(graph);
             break;
 
         case 'B':

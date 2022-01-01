@@ -12,7 +12,7 @@ typedef struct node_
 } node, *pnode;
 
 node *newNode(int, node *);
-void insertLastN(int, node **);
+void insertLastN(int, pnode *);
 void deleteFromListN(int, node **);
 void freeNodes(node **);
 

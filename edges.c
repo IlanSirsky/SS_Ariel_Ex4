@@ -12,7 +12,7 @@ edge *newEdge(int weight, int dest, edge *next, pnode *head)
     {
         return NULL;
     }
-    pnode temp = head;
+    pnode temp = *head;
     while (temp->id != dest){
         temp = temp->next;
     }
