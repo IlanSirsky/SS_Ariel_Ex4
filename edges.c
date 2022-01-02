@@ -20,76 +20,92 @@ edge *newEdge(int weight, pnode dest)
 
 void insertLastE(pnode dest, int w, pnode *head)
 {
-    pedge e = (*head) -> edges;
+    pedge e = (*head)->edges;
 
     pedge ed = newEdge(w, dest);
 
-    if(!e){
-        (*head) -> edges = ed;
+    if (!e)
+    {
+        (*head)->edges = ed;
     }
-    else{
-        while (e -> next)
+    else
+    {
+        while (e->next)
         {
-            e = e -> next;
+            e = e->next;
         }
-        e -> next  = ed;
+        e->next = ed;
     }
 }
 
-void addEdge(int src, int dest, int w, pnode *head){
+void addEdge(int src, int dest, int w, pnode *head)
+{
     pnode curr = *head;
     pnode nsrc = NULL;
     pnode ndest = NULL;
 
-    while(curr){
+    while (curr)
+    {
 
-        if(curr -> id == src){
+        if (curr->id == src)
+        {
             nsrc = curr;
         }
-        if (curr -> id == dest){
+        if (curr->id == dest)
+        {
             ndest = curr;
         }
 
-        curr = curr -> next;
+        curr = curr->next;
     }
 
-    if(!nsrc || !ndest){
+    if (!nsrc || !ndest)
+    {
         return;
     }
 
     insertLastE(ndest, w, &nsrc);
 }
 
-// void deleteFromListE(int id, edge **h)
-// {
-//     if (!*h)
-//         return;
-//     edge *p = *h;
-//     edge **prev = h;
-//     while (p)
-//     {
-//         if (p->id == id)
-//         {
-//             *prev = p->next;
-//             free(p);
-//             p = *prev;
-//         }
-//         else
-//         {
-//             prev = &(p->next);
-//             p = p->next;
-//         }
-//     }
-// }
-
-void freeEdges(edge **edge)
+void deleteFromListE(int id, pedge *h)
 {
-    pedge p = *edge;
-    pedge *prev = edge;
+    if (!*h)
+        return;
+    pedge p = *h;
+    pedge *prev = h;
     while (p)
     {
-        *prev = p->next;
-        free(p);
-        p = *prev;
+        if (p->endpoint->id == id)
+        {
+            *prev = p->next;
+            free(p);
+            p = *prev;
+        }
+        else
+        {
+            prev = &(p->next);
+            p = p->next;
+        }
+    }
+}
+
+void freeEdges(pedge *edge) //need fix
+{
+    if (!edge)
+    {
+        return;
+    }
+    pedge e = *edge;
+    pedge *prev = edge;
+    printf("5\n");
+    while (e)
+    {
+        printf("6\n");
+        *prev = e->next;
+        printf("7\n");
+        free(e); //falls here
+        printf("8\n");
+        e = *prev;
+        printf("9\n");
     }
 }

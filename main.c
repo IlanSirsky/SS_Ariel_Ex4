@@ -19,11 +19,13 @@ int main()
 
         if (in == 'B'){
             insert_node_cmd(&graph);
+            printGraph_cmd(&graph);
             continue;
         }
 
         if (in == 'D'){
             delete_node_cmd(&graph);
+            printGraph_cmd(&graph);
             continue;
         }
 
@@ -38,6 +40,7 @@ int main()
 
         if (in == 'T'){
             TSP_cmd(graph);
+            
             continue;
         }
 

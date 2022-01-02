@@ -14,6 +14,7 @@ typedef struct node_
 node *newNode(int);
 void insertLastN(int, pnode *);
 void deleteFromListN(int, node **);
-void freeNodes(node **);
+void freeNodes(pnode *);
+pnode getNode (pnode *, int);
 
 #endif

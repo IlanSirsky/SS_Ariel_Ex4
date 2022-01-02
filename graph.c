@@ -7,7 +7,7 @@
 #include "edges.h"
 #include "graph.h"
 
-#define IN 9999
+#define IN 9999999
 
 void build_graph_cmd(pnode *head)
 {
@@ -25,11 +25,6 @@ void build_graph_cmd(pnode *head)
         {
             int src = -1;
             scanf("%d", &src);
-            pnode *p = head;
-            while ((*p)->id != src)
-            {
-                p = &((*p)->next);
-            }
             int dest, weight;
             while (scanf("%d", &dest) != 0 && scanf("%d", &weight) != 0)
             {
@@ -46,8 +41,53 @@ void build_graph_cmd(pnode *head)
         }
     }
 }
-void insert_node_cmd(pnode *head) {}
-void delete_node_cmd(pnode *head) {}
+
+void insert_node_cmd(pnode *head)
+{
+    int ind;
+    scanf("%d", &ind);
+    int dest, weight;
+    pnode newNode = getNode(head, ind);
+    if (newNode == NULL)
+    {
+        insertLastN(ind, head);
+        while (scanf("%d", &dest) != 0 && scanf("%d", &weight) != 0)
+        {
+            if (isalpha(dest))
+            {
+                break;
+            }
+            addEdge(ind, dest, weight, head);
+        }
+    }
+    else
+    {
+        pedge *pe = &(newNode->edges);
+        freeEdges(pe);
+        newNode->edges = NULL;
+        while (scanf("%d", &dest) != 0 && scanf("%d", &weight) != 0)
+        {
+            if (isalpha(dest))
+            {
+                break;
+            }
+            addEdge(ind, dest, weight, head);
+        }
+    }
+}
+void delete_node_cmd(pnode *head) {
+    int ind;
+    scanf("%d", &ind);
+    deleteFromListN(ind, head);
+    printGraph_cmd(head);
+    pnode temp = *head;
+    while (temp)
+    {
+        pedge *tempEdge = &(temp->edges);
+        deleteFromListE(ind, tempEdge);
+        temp = temp->next;
+    }
+}
 
 void printGraph_cmd(pnode *head)
 { //for self debug
@@ -68,15 +108,29 @@ void printGraph_cmd(pnode *head)
         temp = temp->next;
         printf("}\n");
     }
+    printf("\n");
 }
 
 void deleteGraph_cmd(pnode *head);
 void shortsPath_cmd(pnode head);
-void TSP_cmd(pnode head) {}
+
+
+void TSP_cmd(pnode head) {
+    int count;
+    scanf("%d", &count);
+    if (count == 0){
+        return;
+    }
+    int cities[count];
+    for (size_t i = 0; i < count; i++)
+    {
+        scanf("%d", &cities[i]);
+    }
+    
+}
 
 int dijsktra(pnode *head, int source, int target)
 {
-
     pnode curr = *head;
     int N = 0;
     while (curr)
