@@ -8,7 +8,8 @@
 node *newNode(int id)
 {
     pnode p = (pnode)malloc(sizeof(node));
-    if (p == NULL){
+    if (p == NULL)
+    {
         return NULL;
     }
     p->id = id;
@@ -20,7 +21,8 @@ node *newNode(int id)
 void insertLastN(int id, pnode *head)
 {
     pnode *p = head;
-    while (*p){
+    while (*p)
+    {
         p = &((*p)->next);
     }
     *p = newNode(id);
@@ -28,38 +30,45 @@ void insertLastN(int id, pnode *head)
 
 void deleteFromListN(int id, pnode *h)
 {
-    if (!*h){
+    if (!h || !*h)
+    {
         return;
     }
-    node *p = *h;
-    pnode *prev = h;
-    while (p)
+
+    if ((*h)->id == id)
     {
-        if (p->id == id)
-        {
-            *prev = p->next;
-            pedge *pe = &(p->edges);
-            free(p);
-            printf("4\n");
-            freeEdges(pe);
-            printf("10\n");
-            p = *prev;
-        }
-        else
-        {
-            prev = &(p->next);
-            p = p->next;
-        }
+        pnode hold = *h;
+        *h = (*h)->next;
+        free(hold);
     }
+
+    pnode p = *h;
+
+    while (p->next && p->next->id != id)
+    {
+        p = p->next;
+    }
+
+    if (!p->next)
+    {
+        return;
+    }
+
+    pnode tmp = p->next;
+    p->next = p->next->next;
+    free(tmp);
 }
 
-void freeNodes(pnode *h){
-    if (!h){
+void freeNodes(pnode *h)
+{
+    if (!h)
+    {
         return;
     }
     pnode p = *h;
     pnode *prev = h;
-    while(p){
+    while (p)
+    {
         *prev = p->next;
         pedge *pe = &(p->edges);
         free(p);
@@ -68,7 +77,8 @@ void freeNodes(pnode *h){
     }
 }
 
-pnode getNode (pnode *head, int id){
+pnode getNode(pnode *head, int id)
+{
     pnode h = *head;
     while (h)
     {

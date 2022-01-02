@@ -67,7 +67,7 @@ void addEdge(int src, int dest, int w, pnode *head)
     insertLastE(ndest, w, &nsrc);
 }
 
-void deleteFromListE(int id, pedge *h)
+void deleteFromListE(int id, pedge *h, pnode *n)
 {
     if (!*h)
         return;
@@ -77,6 +77,7 @@ void deleteFromListE(int id, pedge *h)
     {
         if (p->endpoint->id == id)
         {
+
             *prev = p->next;
             free(p);
             p = *prev;
@@ -97,15 +98,10 @@ void freeEdges(pedge *edge) //need fix
     }
     pedge e = *edge;
     pedge *prev = edge;
-    printf("5\n");
     while (e)
     {
-        printf("6\n");
         *prev = e->next;
-        printf("7\n");
         free(e); //falls here
-        printf("8\n");
         e = *prev;
-        printf("9\n");
     }
 }

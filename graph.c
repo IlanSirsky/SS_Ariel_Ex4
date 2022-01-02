@@ -7,7 +7,37 @@
 #include "edges.h"
 #include "graph.h"
 
-#define IN 9999999
+#define IN 999999
+
+void adapter_cmd(char c, pnode *graph)
+{
+    if (c == 'A')
+    {
+        build_graph_cmd(graph);
+    }
+
+    else if (c == 'B')
+    {
+        insert_node_cmd(graph);
+        printGraph_cmd(graph);
+    }
+
+    else if (c == 'D')
+    {
+        delete_node_cmd(graph);
+        printGraph_cmd(graph);
+    }
+
+    else if (c == 'S')
+    {
+        shortsPath_cmd(*graph);
+    }
+
+    else if (c == 'T')
+    {
+        TSP_cmd(*graph);
+    }
+}
 
 void build_graph_cmd(pnode *head)
 {
@@ -40,6 +70,8 @@ void build_graph_cmd(pnode *head)
             break;
         }
     }
+    printGraph_cmd(head);
+    adapter_cmd(c, head);
 }
 
 void insert_node_cmd(pnode *head)
@@ -74,19 +106,26 @@ void insert_node_cmd(pnode *head)
             addEdge(ind, dest, weight, head);
         }
     }
+    adapter_cmd(getchar(), head);
 }
-void delete_node_cmd(pnode *head) {
+void delete_node_cmd(pnode *head)
+{
     int ind;
     scanf("%d", &ind);
-    deleteFromListN(ind, head);
-    printGraph_cmd(head);
+
     pnode temp = *head;
     while (temp)
     {
         pedge *tempEdge = &(temp->edges);
-        deleteFromListE(ind, tempEdge);
+        deleteFromListE(ind, tempEdge, head);
         temp = temp->next;
     }
+
+    printGraph_cmd(head);
+    deleteFromListN(ind, head);
+    printGraph_cmd(head);
+
+    adapter_cmd(getchar(), head);
 }
 
 void printGraph_cmd(pnode *head)
@@ -112,13 +151,21 @@ void printGraph_cmd(pnode *head)
 }
 
 void deleteGraph_cmd(pnode *head);
-void shortsPath_cmd(pnode head);
 
+void shortsPath_cmd(pnode head)
+{
+    int src = 0, dst = 0;
+    scanf("%d", &src);
+    scanf("%d", &dst);
+    printf("%d\n", shortsPath(head, src, dst));
+}
 
-void TSP_cmd(pnode head) {
+void TSP_cmd(pnode head)
+{
     int count;
     scanf("%d", &count);
-    if (count == 0){
+    if (count == 0)
+    {
         return;
     }
     int cities[count];
@@ -126,95 +173,96 @@ void TSP_cmd(pnode head) {
     {
         scanf("%d", &cities[i]);
     }
-    
 }
 
-int dijsktra(pnode *head, int source, int target)
+int min(int a, int b)
 {
-    pnode curr = *head;
+    if (a == 0)
+    {
+        return b;
+    }
+    if (b == 0)
+    {
+        return a;
+    }
+    if (a < b)
+    {
+        return a;
+    }
+    else
+    {
+        return b;
+    }
+}
+
+int shortsPath(pnode head, int source, int target)
+{
+    if (!head)
+    {
+        return -1;
+    }
+
+    pnode curr = head;
     int N = 0;
     while (curr)
     {
+        if (N < curr->id){
+            N = curr->id;
+        }
         curr = curr->next;
-        N++;
     }
 
-    int cost[N][N];
+    int mat[N][N];
+    
+    for (int k = 0; k < N; k++)
+    {
+        for (int i = 0; i < N; i++)
+        {
+            mat[k][i] = IN;
+        }
+    }
 
-    memset(cost, IN, N * N * sizeof(int));
-
-    curr = *head;
+    curr = head;
     while (curr)
     {
         pedge ed = curr->edges;
         while (ed)
         {
-            cost[curr->id][ed->endpoint->id] = ed->weight;
+            mat[curr->id][ed->endpoint->id] = ed->weight;
             ed = ed->next;
         }
         curr = curr->next;
     }
 
-    int dist[N], prev[N];
-    int selected[N];
-    memset(selected, 0, N * sizeof(int));
-    int i, m, min, start, d, j;
-    char path[N];
-    for (i = 1; i < N; i++)
+    for (int k = 0; k < N; k++)
     {
-        dist[i] = IN;
-        prev[i] = -1;
-    }
-    start = source;
-    selected[start] = 1;
-    dist[start] = 0;
-    while (selected[target] == 0)
-    {
-        min = IN;
-        m = 0;
-        for (i = 1; i < N; i++)
+        for (int i = 0; i < N; i++)
         {
-            d = dist[start] + cost[start][i];
-            if (d < dist[i] && selected[i] == 0)
+            for (int j = 0; j < N; j++)
             {
-                dist[i] = d;
-                prev[i] = start;
-            }
-            if (min > dist[i] && selected[i] == 0)
-            {
-                min = dist[i];
-                m = i;
+                if (i == j)
+                {
+                    mat[i][i] = 0;
+                }
+                else if (i == k || j == k)
+                {
+                    mat[i][j] = mat[i][j];
+                }
+                else
+                {
+                    int val = mat[i][k] + mat[k][j];
+                    if (mat[i][k] == 0 || mat[k][j] == 0)
+                    {
+                        val = 0;
+                    }
+                    mat[i][j] = min(mat[i][j], val);
+                }
             }
         }
-        start = m;
-        selected[start] = 1;
     }
-    start = target;
-    j = 0;
-    while (start != -1 && start < N)
-    {
-        path[j++] = start + 65;
-        start = prev[start];
-    }
-    path[j] = '\0';
-    strrev(path);
-    return dist[target];
-}
 
-char *strrev(char *str)
-{
-    if (!str)
-    {
-        return NULL;
+    if (mat[source][target] == IN) {
+        return -1;
     }
-    char *begin = str;
-    char *end = *begin ? str + strlen(str) - 1 : begin; /* ensure non-empty */
-    char tmp;
-    while (end > begin)
-    {
-        tmp = *end;
-        *end-- = *begin;
-        *begin++ = tmp;
-    }
-    return str;
+    return mat[source][target];
 }

@@ -14,7 +14,9 @@ void deleteGraph_cmd(pnode *head);
 void shortsPath_cmd(pnode head);
 void TSP_cmd(pnode head);
 
-int dijsktra(pnode *head, int, int);
+int shortsPath(pnode head, int, int);
 char *strrev(char *);
+
+void adapter_cmd(char, pnode *head);
 
 #endif
