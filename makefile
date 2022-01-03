@@ -1,4 +1,4 @@
-OUTPUT = DiGraph
+OUTPUT = graph
 CC = gcc
 CFLAGS = -Wall -g
 OBJ = graph.o nodes.o edges.o
