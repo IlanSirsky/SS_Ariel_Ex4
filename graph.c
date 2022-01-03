@@ -35,6 +35,10 @@ void adapter_cmd(char c, pnode *graph)
     {
         TSP_cmd(*graph);
     }
+    else if (c == EOF)
+    {
+        return;
+    }
 }
 
 void build_graph_cmd(pnode *head)
@@ -68,7 +72,8 @@ void build_graph_cmd(pnode *head)
             break;
         }
     }
-    printGraph_cmd(head);
+    //printf("built graph\n");
+    //printGraph_cmd(head);
     adapter_cmd(c, head);
 }
 
@@ -104,6 +109,7 @@ void insert_node_cmd(pnode *head)
             addEdge(ind, dest, weight, head);
         }
     }
+    //printf("added node\n");
     //printGraph_cmd(head);
     adapter_cmd(getchar(), head);
 }
@@ -121,6 +127,7 @@ void delete_node_cmd(pnode *head)
         temp = temp->next;
     }
     deleteFromListN(ind, head);
+    //printf("deleted node\n");
     //printGraph_cmd(head);
     adapter_cmd(getchar(), head);
 }
@@ -269,8 +276,10 @@ void TSP_cmd(pnode head)
     {
         printf("TSP shortest path: %d\n", -1);
     }
-    
-    printf("TSP shortest path: %d\n", perm[ind]);
+    else
+    {
+        printf("TSP shortest path: %d\n", perm[ind]);
+    }
 }
 
 int calcArray(pnode head, int cities[], int size)

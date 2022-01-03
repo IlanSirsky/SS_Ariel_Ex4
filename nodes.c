@@ -54,22 +54,27 @@ void deleteFromListN(int id, pnode *h)
     free(tmp);
 }
 
-void freeNodes(pnode *h)
+void freeNodes(pnode *head)
 {
-    if (!h)
+    if (!head)
     {
         return;
     }
-    printf("im here\n");
-    pnode p = *h;
-    pnode *prev = h;
-    while (p)
+    pnode n = *head;
+    pnode *prev = head;
+    pnode temp = n;
+    while (n)
     {
-        *prev = p->next;
-        pedge *pe = &(p->edges);
-        free(p);
-        freeEdges(pe);
-        p = *prev;
+        *prev = n->next;
+        temp = n;
+        while (temp)
+        {
+            pedge *tempEdge = &(temp->edges);
+            deleteFromListE(n->id, tempEdge, head);
+            temp = temp->next;
+        }
+        deleteFromListN(n->id, head);
+        n = *prev;
     }
 }
 
