@@ -159,7 +159,7 @@ void shortsPath_cmd(pnode head)
     int src = 0, dst = 0;
     scanf("%d", &src);
     scanf("%d", &dst);
-    printf("Dijsktra shortest path: %d\n", shortsPath(head, src, dst));
+    printf("Dijsktra shortest path: %d \n", shortsPath(head, src, dst));
 }
 
 int shortsPath(pnode head, int source, int target)
@@ -274,11 +274,11 @@ void TSP_cmd(pnode head)
     int ind = find_minimum(perm, fac);
     if (perm[ind] == IN)
     {
-        printf("TSP shortest path: %d\n", -1);
+        printf("TSP shortest path: %d \n", -1);
     }
     else
     {
-        printf("TSP shortest path: %d\n", perm[ind]);
+        printf("TSP shortest path: %d \n", perm[ind]);
     }
 }
 
