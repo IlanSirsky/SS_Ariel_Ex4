@@ -19,13 +19,11 @@ void adapter_cmd(char c, pnode *graph)
     else if (c == 'B')
     {
         insert_node_cmd(graph);
-        printGraph_cmd(graph);
     }
 
     else if (c == 'D')
     {
         delete_node_cmd(graph);
-        printGraph_cmd(graph);
     }
 
     else if (c == 'S')
@@ -106,8 +104,10 @@ void insert_node_cmd(pnode *head)
             addEdge(ind, dest, weight, head);
         }
     }
+    //printGraph_cmd(head);
     adapter_cmd(getchar(), head);
 }
+
 void delete_node_cmd(pnode *head)
 {
     int ind;
@@ -120,11 +120,8 @@ void delete_node_cmd(pnode *head)
         deleteFromListE(ind, tempEdge, head);
         temp = temp->next;
     }
-
-    printGraph_cmd(head);
     deleteFromListN(ind, head);
-    printGraph_cmd(head);
-
+    //printGraph_cmd(head);
     adapter_cmd(getchar(), head);
 }
 
@@ -150,49 +147,12 @@ void printGraph_cmd(pnode *head)
     printf("\n");
 }
 
-void deleteGraph_cmd(pnode *head);
-
 void shortsPath_cmd(pnode head)
 {
     int src = 0, dst = 0;
     scanf("%d", &src);
     scanf("%d", &dst);
-    printf("%d\n", shortsPath(head, src, dst));
-}
-
-void TSP_cmd(pnode head)
-{
-    int count;
-    scanf("%d", &count);
-    if (count == 0)
-    {
-        return;
-    }
-    int cities[count];
-    for (size_t i = 0; i < count; i++)
-    {
-        scanf("%d", &cities[i]);
-    }
-}
-
-int min(int a, int b)
-{
-    if (a == 0)
-    {
-        return b;
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    if (a < b)
-    {
-        return a;
-    }
-    else
-    {
-        return b;
-    }
+    printf("Dijsktra shortest path: %d\n", shortsPath(head, src, dst));
 }
 
 int shortsPath(pnode head, int source, int target)
@@ -201,19 +161,19 @@ int shortsPath(pnode head, int source, int target)
     {
         return -1;
     }
-
     pnode curr = head;
     int N = 0;
     while (curr)
     {
-        if (N < curr->id){
+        if (N < curr->id)
+        {
             N = curr->id;
         }
         curr = curr->next;
     }
-
+    N += 1;
     int mat[N][N];
-    
+
     for (int k = 0; k < N; k++)
     {
         for (int i = 0; i < N; i++)
@@ -260,9 +220,120 @@ int shortsPath(pnode head, int source, int target)
             }
         }
     }
-
-    if (mat[source][target] == IN) {
+    if (mat[source][target] == IN)
+    {
         return -1;
     }
     return mat[source][target];
+}
+
+int min(int a, int b)
+{
+    if (a == 0)
+    {
+        return b;
+    }
+    if (b == 0)
+    {
+        return a;
+    }
+    if (a < b)
+    {
+        return a;
+    }
+    else
+    {
+        return b;
+    }
+}
+
+void TSP_cmd(pnode head)
+{
+    int count;
+    scanf("%d", &count);
+    if (count == 0)
+    {
+        return;
+    }
+    int cities[count];
+    for (size_t i = 0; i < count; i++)
+    {
+        scanf("%d", &cities[i]);
+    }
+    int fac = factorial(count);
+    int perm[fac];
+    int temp = 0;
+    permutation(head, cities, 0, count - 1, perm, &temp);
+    int ind = find_minimum(perm, fac);
+    if (perm[ind] == IN)
+    {
+        printf("TSP shortest path: %d\n", -1);
+    }
+    
+    printf("TSP shortest path: %d\n", perm[ind]);
+}
+
+int calcArray(pnode head, int cities[], int size)
+{
+    int distance = 0;
+    for (size_t i = 0; i < size - 1; i++)
+    {
+        int path = shortsPath(head, cities[i], cities[i + 1]);
+        if (path == -1)
+        {
+            return IN;
+        }
+        distance += path;
+    }
+    return distance;
+}
+
+void swap(int *a, int *b)
+{
+    int temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void permutation(pnode head, int *cities, int start, int end, int *perm, int *ind)
+{
+    if (start == end)
+    {
+        perm[(*ind)++] = calcArray(head, cities, end + 1);
+        return;
+    }
+    int i;
+    for (i = start; i <= end; i++)
+    {
+        //swapping numbers
+        swap((cities + i), (cities + start));
+        //fixing one first digit and calling permutation on the rest of the digits
+        permutation(head, cities, start + 1, end, perm, ind);
+        swap((cities + i), (cities + start));
+    }
+}
+
+//factorial
+int factorial(int num)
+{
+    if (num < 0)
+    {
+        return 0;
+    }
+    if (num == 0)
+        return 1;
+    return factorial(num - 1) * num;
+}
+
+//finding minimum in an array
+int find_minimum(int arr[], int n)
+{
+    int index = 0;
+    for (int i = 1; i < n; i++)
+        if (arr[i] < arr[index])
+        {
+            index = i;
+        }
+    return index;
 }

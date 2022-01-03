@@ -34,26 +34,21 @@ void deleteFromListN(int id, pnode *h)
     {
         return;
     }
-
     if ((*h)->id == id)
     {
         pnode hold = *h;
         *h = (*h)->next;
         free(hold);
     }
-
     pnode p = *h;
-
     while (p->next && p->next->id != id)
     {
         p = p->next;
     }
-
     if (!p->next)
     {
         return;
     }
-
     pnode tmp = p->next;
     p->next = p->next->next;
     free(tmp);
@@ -65,6 +60,7 @@ void freeNodes(pnode *h)
     {
         return;
     }
+    printf("im here\n");
     pnode p = *h;
     pnode *prev = h;
     while (p)

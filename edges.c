@@ -21,9 +21,7 @@ edge *newEdge(int weight, pnode dest)
 void insertLastE(pnode dest, int w, pnode *head)
 {
     pedge e = (*head)->edges;
-
     pedge ed = newEdge(w, dest);
-
     if (!e)
     {
         (*head)->edges = ed;
@@ -46,7 +44,6 @@ void addEdge(int src, int dest, int w, pnode *head)
 
     while (curr)
     {
-
         if (curr->id == src)
         {
             nsrc = curr;
@@ -55,7 +52,6 @@ void addEdge(int src, int dest, int w, pnode *head)
         {
             ndest = curr;
         }
-
         curr = curr->next;
     }
 
@@ -77,7 +73,6 @@ void deleteFromListE(int id, pedge *h, pnode *n)
     {
         if (p->endpoint->id == id)
         {
-
             *prev = p->next;
             free(p);
             p = *prev;
