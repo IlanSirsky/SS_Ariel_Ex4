@@ -85,7 +85,7 @@ void deleteFromListE(int id, pedge *h, pnode *n)
     }
 }
 
-void freeEdges(pedge *edge) //need fix
+void freeEdges(pedge *edge)
 {
     if (!edge)
     {
@@ -96,7 +96,7 @@ void freeEdges(pedge *edge) //need fix
     while (e)
     {
         *prev = e->next;
-        free(e); //falls here
+        free(e);
         e = *prev;
     }
 }

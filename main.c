@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 #include "nodes.h"
 #include "edges.h"
 #include "graph.h"
@@ -11,6 +11,6 @@ int main()
     while (scanf(" %c", &in) != EOF){
         adapter_cmd(in, &graph);
     }
-    freeNodes(&graph);
+    delete_graph_cmd(&graph);
     return 0;
 }

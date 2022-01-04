@@ -14,7 +14,6 @@ typedef struct node_
 node *newNode(int);
 void insertLastN(int, pnode *);
 void deleteFromListN(int, node **);
-void freeNodes(pnode *);
 pnode getNode (pnode *, int);
 void deleteGraph_cmd(pnode *);
 

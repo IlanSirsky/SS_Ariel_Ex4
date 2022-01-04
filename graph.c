@@ -43,7 +43,7 @@ void adapter_cmd(char c, pnode *graph)
 
 void build_graph_cmd(pnode *head)
 {
-    freeNodes(head);
+    //delete_graph_cmd(head);
     int count = 0;
     scanf("%d", &count);
     for (int i = 0; i < count; i++)
@@ -72,8 +72,8 @@ void build_graph_cmd(pnode *head)
             break;
         }
     }
-    //printf("built graph\n");
-    //printGraph_cmd(head);
+    // printf("built graph\n");
+    // printGraph_cmd(head);
     adapter_cmd(c, head);
 }
 
@@ -109,9 +109,32 @@ void insert_node_cmd(pnode *head)
             addEdge(ind, dest, weight, head);
         }
     }
-    //printf("added node\n");
-    //printGraph_cmd(head);
+    // printf("added node\n");
+    // printGraph_cmd(head);
     adapter_cmd(getchar(), head);
+}
+
+void delete_graph_cmd(pnode *head)
+{
+    if (!head)
+    {
+        return;
+    }
+    pnode temp = *head;
+    while (temp)
+    {
+        pedge nodeEdges = temp->edges;
+        while (nodeEdges)
+        {
+            pedge edge = nodeEdges;
+            nodeEdges = nodeEdges->next;
+            free(edge);
+        }
+        pnode node = temp;
+        temp = temp->next;
+        free(node);
+    }
+    free(temp);
 }
 
 void delete_node_cmd(pnode *head)
@@ -127,13 +150,13 @@ void delete_node_cmd(pnode *head)
         temp = temp->next;
     }
     deleteFromListN(ind, head);
-    //printf("deleted node\n");
-    //printGraph_cmd(head);
+    // printf("deleted node\n");
+    // printGraph_cmd(head);
     adapter_cmd(getchar(), head);
 }
 
 void printGraph_cmd(pnode *head)
-{ //for self debug
+{ // for self debug
     if (!head)
     {
         return;
@@ -315,15 +338,15 @@ void permutation(pnode head, int *cities, int start, int end, int *perm, int *in
     int i;
     for (i = start; i <= end; i++)
     {
-        //swapping numbers
+        // swapping numbers
         swap((cities + i), (cities + start));
-        //fixing one first digit and calling permutation on the rest of the digits
+        // fixing one first digit and calling permutation on the rest of the digits
         permutation(head, cities, start + 1, end, perm, ind);
         swap((cities + i), (cities + start));
     }
 }
 
-//factorial
+// factorial
 int factorial(int num)
 {
     if (num < 0)
@@ -335,7 +358,7 @@ int factorial(int num)
     return factorial(num - 1) * num;
 }
 
-//finding minimum in an array
+// finding minimum in an array
 int find_minimum(int arr[], int n)
 {
     int index = 0;

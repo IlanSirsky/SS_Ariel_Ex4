@@ -28,53 +28,27 @@ void insertLastN(int id, pnode *head)
     *p = newNode(id);
 }
 
-void deleteFromListN(int id, pnode *h)
+void deleteFromListN(int id, pnode *head)
 {
-    if (!h || !*h)
-    {
-        return;
-    }
-    if ((*h)->id == id)
-    {
-        pnode hold = *h;
-        *h = (*h)->next;
-        free(hold);
-    }
-    pnode p = *h;
-    while (p->next && p->next->id != id)
-    {
-        p = p->next;
-    }
-    if (!p->next)
-    {
-        return;
-    }
-    pnode tmp = p->next;
-    p->next = p->next->next;
-    free(tmp);
-}
-
-void freeNodes(pnode *head)
-{
-    if (!head)
-    {
-        return;
-    }
-    pnode n = *head;
-    pnode *prev = head;
-    pnode temp = n;
-    while (n)
-    {
-        *prev = n->next;
-        temp = n;
-        while (temp)
+    //printf("before node\n");
+    //printGraph_cmd(head);
+    pnode h = *head;
+    pnode p = NULL;
+    if(h->id != id){
+        while (h->next->id != id)
         {
-            pedge *tempEdge = &(temp->edges);
-            deleteFromListE(n->id, tempEdge, head);
-            temp = temp->next;
+            h = h->next;
         }
-        deleteFromListN(n->id, head);
-        n = *prev;
+        p = h->next;
+        h->next = h->next->next;
+        freeEdges(&(p->edges));
+        free(p);
+    }
+    else{
+        p = *head;
+        *head = p->next;
+        freeEdges(&(p->edges));
+        free(p);
     }
 }
 
